@@ -4,6 +4,7 @@ import { FormControl, InputLabel, MenuItem, Select, Typography, TextField, Switc
 import { Email, Label } from '@mui/icons-material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { styled } from '@mui/system';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
@@ -13,6 +14,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import AddLineForm from './addLineForm';
 
 
 const MySelect = styled(Select)({
@@ -26,7 +28,7 @@ const MyTextField = styled(TextField)({
   width: '320px'
 })
 
-interface DataTableProps {
+export interface DataTableProps {
   name: String
   role: String
   email: String
@@ -34,17 +36,16 @@ interface DataTableProps {
 
 
 
-const Tab1Form = () => {
+const MainForm = () => {
 
   const [checked, setChecked] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false)
-  const [dataTable, setDataTable] = useState<DataTableProps[]>()
+  const [dataTable, setDataTable] = useState<DataTableProps[]>([])
+  const [isAddData, setIsAddData] = useState(false)
 
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
-
-
   };
 
   useEffect(() => {
@@ -53,6 +54,7 @@ const Tab1Form = () => {
   }, [checked]);
   return (
     <div className='tab1_main_form'>
+      {isAddData && <AddLineForm setDataTable={setDataTable} setIsAddData={setIsAddData}/>}
       <Stack spacing='24px'>
         <Typography variant='h5'>כותרת משנית</Typography>
 
@@ -118,11 +120,35 @@ const Tab1Form = () => {
             <Button
               variant="outlined"
               size="small"
+              onClick={() => setIsAddData(true)}
             >
               <AddIcon /> הוסף שורה
             </Button>
           </Stack>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead sx={{  backgroundColor: '#FFFFFF'}}>
 
+                <TableRow>
+                  <TableCell>שם</TableCell>
+                  <TableCell>תפקיד</TableCell>
+                  <TableCell>דואל</TableCell>
+                  <TableCell>   </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {dataTable && dataTable.map((person, index) =>( 
+
+                <TableRow key={index}>
+                  <TableCell>{person.name}</TableCell>
+                  <TableCell>{person.role}</TableCell>
+                  <TableCell>{person.email}</TableCell>
+                  <TableCell> <DeleteOutlineIcon/>  </TableCell>
+                </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Stack>
       </Stack>
 
@@ -130,4 +156,4 @@ const Tab1Form = () => {
   )
 }
 
-export default Tab1Form
+export default MainForm

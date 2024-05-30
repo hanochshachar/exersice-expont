@@ -32,6 +32,7 @@ body{
   border-radius: 16px;
   padding: 32px;
   margin: auto;
+  position: relative;
 }
 .second_title {
   margin-left: 85%;

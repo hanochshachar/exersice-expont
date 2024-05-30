@@ -2,7 +2,7 @@ import React from 'react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AdjustRoundedIcon from '@mui/icons-material/AdjustRounded';
 import { Typography } from '@mui/material';
-import Tab1Form from './Tab1Form';
+import MainForm1 from './MainForm';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import './main-form.css'
@@ -36,7 +36,7 @@ const MainForm = () => {
         <Typography>טאב 1</Typography>
         <Typography >סיכום ושליחה</Typography>
       </div>
-      <Tab1Form />
+      <MainForm1 />
     </main>
   )
 }
