@@ -1,0 +1,41 @@
+body{
+  direction: rtl;
+}
+
+
+.title_head_tab1 {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  width: 80%;
+}
+
+
+.line {
+  width: 100%;
+  background-color:#E8EAED;
+  height: 1px;
+}
+.paragraph {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin: auto;
+  
+}
+.tab1_main_form {
+  width: 80%;
+  border: 1px solid #E8EAED;
+  border-radius: 16px;
+  padding: 32px;
+  margin: auto;
+}
+.second_title {
+  margin-left: 85%;
+}
+.first_form {
+  margin-left: 85%;
+}
