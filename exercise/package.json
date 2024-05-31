@@ -18,10 +18,16 @@
     "@mui/material": "^5.15.18",
     "@mui/material-nextjs": "^5.15.11",
     "@mui/x-date-pickers": "^7.6.0",
+    "@react-pdf-viewer/core": "^3.12.0",
+    "@react-pdf-viewer/default-layout": "^3.12.0",
     "dayjs": "^1.11.11",
     "next": "14.2.3",
+    "pdfjs-dist": "^3.10.111",
+    "pspdfkit": "^2024.3.2",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-dropzone": "^14.2.3",
+    "react-pdf": "^9.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -29,6 +35,8 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
-    "typescript": "^5"
+    "raw-loader": "^4.0.2",
+    "typescript": "^5",
+    "worker-loader": "^3.0.8"
   }
 }

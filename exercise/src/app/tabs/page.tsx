@@ -8,6 +8,7 @@ import Stack from '@mui/material/Stack';
 import './main-form.css'
 import { WidthFull } from '@mui/icons-material';
 import DateForm from './DateForm';
+import UploadDocuments from './UploadDocuments';
 
 
 const MainForm = () => {
@@ -39,6 +40,7 @@ const MainForm = () => {
       </div>
       <FirstForm />
       <DateForm/>
+      <UploadDocuments/>
     </main>
   )
 }
