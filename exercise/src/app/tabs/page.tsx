@@ -2,11 +2,12 @@ import React from 'react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AdjustRoundedIcon from '@mui/icons-material/AdjustRounded';
 import { Typography } from '@mui/material';
-import MainForm1 from './MainForm';
+import FirstForm from './FirstForm';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import './main-form.css'
 import { WidthFull } from '@mui/icons-material';
+import DateForm from './DateForm';
 
 
 const MainForm = () => {
@@ -36,7 +37,8 @@ const MainForm = () => {
         <Typography>טאב 1</Typography>
         <Typography >סיכום ושליחה</Typography>
       </div>
-      <MainForm1 />
+      <FirstForm />
+      <DateForm/>
     </main>
   )
 }

@@ -29,6 +29,7 @@ const MyTextField = styled(TextField)({
 })
 
 export interface DataTableProps {
+  id: Number
   name: String
   role: String
   email: String
@@ -36,7 +37,7 @@ export interface DataTableProps {
 
 
 
-const MainForm = () => {
+const FirstForm = () => {
 
   const [checked, setChecked] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false)
@@ -49,12 +50,17 @@ const MainForm = () => {
   };
 
   useEffect(() => {
-    console.log(checked);
+    
     setIsDisabled(checked)
   }, [checked]);
+
+  useEffect(() => {
+    console.log(dataTable);
+    
+  }, [dataTable])
   return (
     <div className='tab1_main_form'>
-      {isAddData && <AddLineForm setDataTable={setDataTable} setIsAddData={setIsAddData}/>}
+      {isAddData && <AddLineForm setDataTable={setDataTable} setIsAddData={setIsAddData} />}
       <Stack spacing='24px'>
         <Typography variant='h5'>כותרת משנית</Typography>
 
@@ -127,7 +133,7 @@ const MainForm = () => {
           </Stack>
           <TableContainer component={Paper}>
             <Table>
-              <TableHead sx={{  backgroundColor: '#FFFFFF'}}>
+              <TableHead sx={{ backgroundColor: '#FFFFFF' }}>
 
                 <TableRow>
                   <TableCell>שם</TableCell>
@@ -137,14 +143,17 @@ const MainForm = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {dataTable && dataTable.map((person, index) =>( 
+                {dataTable && dataTable.map((person, index) => (
 
-                <TableRow key={index}>
-                  <TableCell>{person.name}</TableCell>
-                  <TableCell>{person.role}</TableCell>
-                  <TableCell>{person.email}</TableCell>
-                  <TableCell> <DeleteOutlineIcon/>  </TableCell>
-                </TableRow>
+                  <TableRow key={index}>
+                    <TableCell>{person.name}</TableCell>
+                    <TableCell>{person.role}</TableCell>
+                    <TableCell>{person.email}</TableCell>
+                    <TableCell
+                      onClick={() => setDataTable((prevData) => prevData.filter(prsn => prsn.id !==  person.id ))}>
+                      <DeleteOutlineIcon />
+                    </TableCell>
+                  </TableRow>
                 ))}
               </TableBody>
             </Table>
@@ -156,4 +165,4 @@ const MainForm = () => {
   )
 }
 
-export default MainForm
+export default FirstForm

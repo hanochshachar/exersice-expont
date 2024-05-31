@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { DataTableProps } from './MainForm';
+import { DataTableProps } from './FirstForm';
 
 import { Button, TextField, Box, IconButton, Stack } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -10,7 +10,7 @@ interface AddLineProps {
 }
 
 const AddLineForm = ({ setDataTable, setIsAddData }: AddLineProps) => {
-  const [formData, setFormData] = useState<DataTableProps>({
+  const [formData, setFormData] = useState({
     name: '',
     role: '',
     email: '',
@@ -26,7 +26,7 @@ const AddLineForm = ({ setDataTable, setIsAddData }: AddLineProps) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setDataTable((prevData: DataTableProps[]) => [...prevData, formData]);
+    setDataTable((prevData: DataTableProps[]) => [...prevData, {id: prevData.length + 1 , ...formData}]);
     setFormData({
       name: '',
       role: '',
