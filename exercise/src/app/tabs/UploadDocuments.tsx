@@ -172,11 +172,11 @@ const UploadDocuments = () => {
                     </Stack>
                     <Stack direction='row'
                      justifyContent='space-around'
-                      sx={{width: '100%', paddingBottom: '27px'}}
+                      sx={{width: '100%'}}
                       alignItems='center' >
 
-                    <Typography variant='body2' mt={6}>שם הקובץ<span style={{color: 'red'}}>*</span></Typography>
-                    <TextField sx={{height: '5px', width: '900px'}} placeholder='שם הקובץ שהוזן'/>
+                    <Typography variant='body2' >שם הקובץ<span style={{color: 'red'}}>*</span></Typography>
+                    <TextField sx={{ width: '900px'}} placeholder='שם הקובץ שהוזן'/>
                     </Stack>
                 </MyStack>
                     {/* <iframe src={pdfPath} width="500px" height="500px"></iframe> */}
