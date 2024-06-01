@@ -23,7 +23,7 @@ interface PdfDetails {
     file: File | null
     filePath: any
     displayName: boolean
-    
+    isDisplayInput: boolean
 }
 
 const UploadDocuments = () => {
@@ -53,7 +53,8 @@ const UploadDocuments = () => {
                         name: uploadedFile.name,
                         file: uploadedFile,
                         filePath: results,
-                        displayName: false
+                        displayName: false,
+                        isDisplayInput: true
                     }])
                 };
                 reader.readAsDataURL(uploadedFile);
@@ -186,14 +187,15 @@ const UploadDocuments = () => {
                                 <Button onClick={() => setPdfToDisplay(pdf.filePath)}>
                                     <OpenWithIcon />
                                 </Button>
-                                <Button>
+                                <Button onClick={() => setPdfListDetails((prev) =>
+                                prev.map((item) => (item.id === pdf.id ? { ...item, isDisplayInput: !pdf.isDisplayInput } : item)))}>
 
                                     <ExpandLessIcon />
                                 </Button>
 
                             </Stack>
                         </Stack>
-                        <Stack direction='row'
+                        {pdf.isDisplayInput && <Stack direction='row'
                             justifyContent='space-around'
                             sx={{ width: '100%' }}
                             alignItems='center' >
@@ -205,7 +207,7 @@ const UploadDocuments = () => {
                             onChange={(e) => handleNameChange(pdf.id, e.target.value)}
                                 sx={{ width: '900px' }}
                                  placeholder='שם הקובץ שהוזן' />
-                        </Stack>
+                        </Stack>}
                     </MyStack>
 
 
