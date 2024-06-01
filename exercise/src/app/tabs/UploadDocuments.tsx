@@ -9,6 +9,7 @@ import { Box, Button, Typography, Paper, Input, Stack, styled, TextField } from 
 import FilterDramaRoundedIcon from '@mui/icons-material/FilterDramaRounded';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import CloseIcon from '@mui/icons-material/Close';
 import OpenWithIcon from '@mui/icons-material/OpenWith';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import packageJson from '../../../package.json';
@@ -133,7 +134,28 @@ const UploadDocuments = () => {
                 </Typography>
 
             </Paper>
-            {pdfToDisplay !== null && <iframe src={pdfToDisplay} width="500px" height="500px"></iframe>}
+            {pdfToDisplay && (
+                <Box sx={{ position: 'relative', marginBottom: '1.5rem' }}>
+                    <iframe src={pdfToDisplay as string} width="500px" height="500px"></iframe>
+                    <Button
+                        onClick={() => setPdfToDisplay(null)}
+                        sx={{
+                            position: 'absolute',
+                            top: '10px',
+                            right: '10px',
+                            backgroundColor: '#fff',
+                            borderRadius: '50%',
+                            minWidth: '0',
+                            width: '36px',
+                            height: '36px',
+                            padding: '0',
+                        }}
+                    >
+                        <CloseIcon />
+                    </Button>
+                </Box>
+            )}
+
             {pdfListDetails && pdfListDetails.map((pdf, index) =>
 
             (
