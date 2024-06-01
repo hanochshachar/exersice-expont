@@ -30,6 +30,7 @@ const UploadDocuments = () => {
     const [pdfListDetails, setPdfListDetails] = useState<PdfDetails[]>([])
     const [pdfError, setPdfError] = useState('');
     const [pdfToDisplay, setPdfToDisplay] = useState<any>(null)
+    const [bigText, setBigText] = useState('')
 
     const defaultLayoutPluginInstance = defaultLayoutPlugin();
     const pdfjsVersion = packageJson.dependencies['pdfjs-dist'];
@@ -91,7 +92,7 @@ const UploadDocuments = () => {
 
     const handleNameChange = (id: number | null, newName: string) => {
         setPdfListDetails((prev) =>
-            prev.map((pdf) => (pdf.id === id ? { ...pdf, name: newName , displayName: true} : pdf))
+            prev.map((pdf) => (pdf.id === id ? { ...pdf, name: newName, displayName: true } : pdf))
         );
     };
 
@@ -99,6 +100,16 @@ const UploadDocuments = () => {
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <MyStack>
+                <Typography variant="h5" mb={2}>
+                    טקסט גדול
+                </Typography>
+                <TextField multiline={true}
+                    rows={5}
+                    placeholder='הקלד כאן'
+                    value={bigText}
+                    onChange={(ev) => setBigText(ev.target.value) } />
+            </MyStack>
             <Paper
                 {...getRootProps()}
                 sx={{
@@ -108,7 +119,8 @@ const UploadDocuments = () => {
                     border: '2px dashed #ccc',
                     backgroundColor: isDragActive ? '#f0f0f0' : '#fafafa',
                     cursor: 'pointer',
-                    marginBottom: '2rem'
+                    marginBottom: '2rem',
+                    position: 'relative'
                 }}
             >
                 <input {...getInputProps()} />
@@ -126,8 +138,9 @@ const UploadDocuments = () => {
                     borderRadius: '50%',
                     color: '#3872DC',
                     padding: '.7px',
-                    left: '48.3vw',
-                    top: '186%'
+                    left: '48%',
+                    top: '100px'
+                    
                 }} />
 
                 <Typography variant="h6">
@@ -188,7 +201,7 @@ const UploadDocuments = () => {
                                     <OpenWithIcon />
                                 </Button>
                                 <Button onClick={() => setPdfListDetails((prev) =>
-                                prev.map((item) => (item.id === pdf.id ? { ...item, isDisplayInput: !pdf.isDisplayInput } : item)))}>
+                                    prev.map((item) => (item.id === pdf.id ? { ...item, isDisplayInput: !pdf.isDisplayInput } : item)))}>
 
                                     <ExpandLessIcon />
                                 </Button>
@@ -201,12 +214,12 @@ const UploadDocuments = () => {
                             alignItems='center' >
 
                             <Typography variant='body2' >שם הקובץ<span style={{ color: 'red' }}>*</span></Typography>
-                            <TextField 
-                            autoFocus 
-                             value={pdf.displayName ? pdf.name : ''}
-                            onChange={(e) => handleNameChange(pdf.id, e.target.value)}
+                            <TextField
+                                autoFocus
+                                value={pdf.displayName ? pdf.name : ''}
+                                onChange={(e) => handleNameChange(pdf.id, e.target.value)}
                                 sx={{ width: '900px' }}
-                                 placeholder='שם הקובץ שהוזן' />
+                                placeholder='שם הקובץ שהוזן' />
                         </Stack>}
                     </MyStack>
 
