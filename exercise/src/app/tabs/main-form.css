@@ -26,3 +26,11 @@
   height: fit-content;
   padding: 2rem;
 }
+.tab1_main_form {
+  width: 80%;
+  border: 1px solid #E8EAED;
+  border-radius: 16px;
+  padding: 32px;
+  margin: auto;
+  position: relative;
+}

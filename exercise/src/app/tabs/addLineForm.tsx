@@ -35,7 +35,17 @@ const AddLineForm = ({ setDataTable, setIsAddData }: AddLineProps) => {
   };
 
   return (
-    <Box sx={{position: 'sticky', margin: 'auto', padding: '10px', background: 'blue', top: '65%'}} component="form" onSubmit={handleSubmit}>
+    <Box sx={{position: 'absolute',
+     margin: 'auto',
+      padding: '10px',
+       background: '#EAF2FF',
+        top: '30%',
+      display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
+  marginRight: '60%',}}
+     component="form" 
+     onSubmit={handleSubmit}>
           <IconButton 
         onClick={() => setIsAddData(false)} 
         sx={{ margin: '10px',}}
@@ -57,7 +67,7 @@ const AddLineForm = ({ setDataTable, setIsAddData }: AddLineProps) => {
         onChange={handleChange}
         sx={{ margin: '2px',}}
         margin="normal"
-        variant="filled"
+        
       />
       <TextField
         label="Email"

@@ -26,14 +26,7 @@ body{
   margin: auto;
   
 }
-.tab1_main_form {
-  width: 80%;
-  border: 1px solid #E8EAED;
-  border-radius: 16px;
-  padding: 32px;
-  margin: auto;
-  position: relative;
-}
+
 .second_title {
   margin-left: 85%;
 }
