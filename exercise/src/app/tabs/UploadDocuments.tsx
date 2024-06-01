@@ -52,6 +52,7 @@ const UploadDocuments = () => {
                         name: uploadedFile.name,
                         file: uploadedFile,
                         filePath: results,
+                        displayName: false
                     }])
                 };
                 reader.readAsDataURL(uploadedFile);
@@ -88,7 +89,7 @@ const UploadDocuments = () => {
 
     const handleNameChange = (id: number | null, newName: string) => {
         setPdfListDetails((prev) =>
-            prev.map((pdf) => (pdf.id === id ? { ...pdf, name: newName } : pdf))
+            prev.map((pdf) => (pdf.id === id ? { ...pdf, name: newName , displayName: true} : pdf))
         );
     };
 
@@ -178,7 +179,7 @@ const UploadDocuments = () => {
                             <Typography variant='body2' >שם הקובץ<span style={{ color: 'red' }}>*</span></Typography>
                             <TextField 
                             autoFocus 
-                             value={pdf.name || ''}
+                             value={pdf.displayName ? pdf.name : ''}
                             onChange={(e) => handleNameChange(pdf.id, e.target.value)}
                                 sx={{ width: '900px' }}
                                  placeholder='שם הקובץ שהוזן' />
