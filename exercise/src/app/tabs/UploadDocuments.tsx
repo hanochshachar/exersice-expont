@@ -14,53 +14,48 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import packageJson from '../../../package.json';
 import Image from 'next/image';
 import pdfIcon from '../../../public/pdfImage.png';
+import { Filter } from '@mui/icons-material';
 
 interface PdfDetails {
-    id: Number | null
-    name: String | null
+    id: number | null
+    name: string | null
     file: File | null,
-    filePath: String | ArrayBuffer | null
+    filePath: any
 }
 
 const UploadDocuments = () => {
     const [pdfListDetails, setPdfListDetails] = useState<PdfDetails[]>([])
-    const [pdfFile, setPdfFile] = useState<File | null>(null);
-    const [fileName, setFileName] = useState("");
     const [pdfError, setPdfError] = useState('');
-    const [pdfPath, setPdfPath] = useState<string | ArrayBuffer | null>()
+    const [pdfToDisplay, setPdfToDisplay] = useState<any>(null)
 
     const defaultLayoutPluginInstance = defaultLayoutPlugin();
     const pdfjsVersion = packageJson.dependencies['pdfjs-dist'];
-
-
-    
 
     const onDrop = useCallback((acceptedFiles: any) => {
 
         const uploadedFile = acceptedFiles[0];
         const allowedFiles = ['application/pdf'];
-        setPdfFile(uploadedFile);
 
         let results: string | ArrayBuffer | null
 
         if (uploadedFile) {
             if (uploadedFile && allowedFiles.includes(uploadedFile.type)) {
-                // setFileName(uploadedFile.name);
+
                 let reader = new FileReader();
                 reader.onload = () => {
                     results = reader.result;
-                };
-                reader.readAsDataURL(uploadedFile);
-                setPdfListDetails((prev) => [...prev,
-                     {id: prev.length + 1,
+                    setPdfListDetails((prev) => [...prev,
+                    {
+                        id: prev.length + 1,
                         name: uploadedFile.name,
                         file: uploadedFile,
                         filePath: results,
-                     }])
+                    }])
+                };
+                reader.readAsDataURL(uploadedFile);
             }
             else {
                 setPdfError('Not a valid pdf: Please select only PDF');
-                setPdfFile(null);
             }
         }
         else {
@@ -69,24 +64,30 @@ const UploadDocuments = () => {
     }, []);
 
     useEffect(() => {
-        console.log(pdfPath);
-    }, [pdfPath])
+        console.log(pdfToDisplay);
+    }, [pdfToDisplay])
 
     const MyStack = styled(Stack)({
         border: '1px solid #E8EAED',
         borderRadius: '16px',
         width: '80%',
         padding: '1.5rem',
-        
+
         marginBottom: '1.5rem',
         backgroundColor: '#F9FAFB'
-        
+
     })
 
     const formatFileSize = (size: any) => {
         if (size < 1024) return `${size} bytes`;
         if (size < 1048576) return `${(size / 1024).toFixed(2)} KB`;
         return `${(size / 1048576).toFixed(2)} MB`;
+    };
+
+    const handleNameChange = (id: number | null, newName: string) => {
+        setPdfListDetails((prev) =>
+            prev.map((pdf) => (pdf.id === id ? { ...pdf, name: newName } : pdf))
+        );
     };
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
@@ -129,61 +130,63 @@ const UploadDocuments = () => {
                 </Typography>
 
             </Paper>
-            {/* <Button
-                variant="contained"
-                component="label"
-            >
-                Upload PDF
-                <input
-                    type="file"
-                    accept="application/pdf"
-                    hidden
-                    onChange={handleFileChange}
-                />
-            </Button> */}
-            { pdfListDetails && pdfListDetails.map((pdf) => 
+            {pdfToDisplay !== null && <iframe src={pdfToDisplay} width="500px" height="500px"></iframe>}
+            {pdfListDetails && pdfListDetails.map((pdf, index) =>
 
             (
                 <>
 
-                <MyStack gap={2}>
+                    <MyStack gap={2} key={pdf.id}>
 
-                    <Stack direction='row' justifyContent='space-between' sx={{width: '100%'}} >
+                        <Stack direction='row' justifyContent='space-between' sx={{ width: '100%' }} >
 
-                        <Stack direction='row' alignItems='center' justifyContent='space-around' gap={2}>
+                            <Stack direction='row' alignItems='center' justifyContent='space-around' gap={2}>
 
-                            <Box >
-                                <Image
-                                    src={pdfIcon}
-                                    alt="PDF Preview"
-                                    width={15}
-                                    height={15}
-                                />
-                            </Box>
-                            <Typography variant="body2" >{pdf.name}</Typography>
-                            <Typography variant="body2">{formatFileSize(pdf.file?.size)}</Typography>
+                                <Box >
+                                    <Image
+                                        src={pdfIcon}
+                                        alt="PDF Preview"
+                                        width={15}
+                                        height={15}
+                                    />
+                                </Box>
+                                <Typography variant="body2" >{pdf.name}</Typography>
+                                <Typography variant="body2">{formatFileSize(pdf.file?.size)}</Typography>
+                            </Stack>
+
+                            <Stack direction='row' alignItems='center' justifyContent='space-around' gap={1}>
+                                <Button onClick={() => setPdfListDetails((list) => list.filter((item) => item.id !== pdf.id))}>
+                                    <DeleteOutlineOutlinedIcon />
+                                </Button>
+                                <Button onClick={() => setPdfToDisplay(pdf.filePath)}>
+                                    <OpenWithIcon />
+                                </Button>
+                                <Button>
+
+                                    <ExpandLessIcon />
+                                </Button>
+
+                            </Stack>
                         </Stack>
+                        <Stack direction='row'
+                            justifyContent='space-around'
+                            sx={{ width: '100%' }}
+                            alignItems='center' >
 
-                        <Stack direction='row' alignItems='center' justifyContent='space-around' gap={1}>
-                            <DeleteOutlineOutlinedIcon />
-                            <OpenWithIcon />
-                            <ExpandLessIcon />
+                            <Typography variant='body2' >שם הקובץ<span style={{ color: 'red' }}>*</span></Typography>
+                            <TextField 
+                            autoFocus 
+                             value={pdf.name || ''}
+                            onChange={(e) => handleNameChange(pdf.id, e.target.value)}
+                                sx={{ width: '900px' }}
+                                 placeholder='שם הקובץ שהוזן' />
                         </Stack>
-                    </Stack>
-                    <Stack direction='row'
-                     justifyContent='space-around'
-                      sx={{width: '100%'}}
-                      alignItems='center' >
+                    </MyStack>
 
-                    <Typography variant='body2' >שם הקובץ<span style={{color: 'red'}}>*</span></Typography>
-                    <TextField sx={{ width: '900px'}} placeholder='שם הקובץ שהוזן'/>
-                    </Stack>
-                </MyStack>
-                    {/* <iframe src={pdfPath} width="500px" height="500px"></iframe> */}
 
                 </>
             )
-            ) }
+            )}
         </Box>
     );
 }
