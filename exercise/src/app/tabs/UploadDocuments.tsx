@@ -19,8 +19,10 @@ import { Filter } from '@mui/icons-material';
 interface PdfDetails {
     id: number | null
     name: string | null
-    file: File | null,
+    file: File | null
     filePath: any
+    displayName: boolean
+    
 }
 
 const UploadDocuments = () => {
