@@ -9,6 +9,7 @@ import './main-form.css'
 import { WidthFull } from '@mui/icons-material';
 import DateForm from './DateForm';
 import UploadDocuments from './UploadDocuments';
+import ComplexTable from './ComplexTable';
 
 
 const MainForm = () => {
@@ -41,6 +42,7 @@ const MainForm = () => {
       <FirstForm />
       <DateForm/>
       <UploadDocuments/>
+      <ComplexTable/>
     </main>
   )
 }

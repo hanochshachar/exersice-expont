@@ -34,3 +34,12 @@
   margin: auto;
   position: relative;
 }
+.complex-table-container {
+  width: 80%;
+  margin: auto;
+  margin-top: 2rem;
+  height: fit-content;
+  padding: 2rem;
+  border: 1px solid #E8EAED;
+  border-radius: 16px;
+}
