@@ -65,12 +65,12 @@ const ComplexTable = () => {
 
             <Stack direction='row' mb={2} justifyContent='space-between'>
                 <Typography variant='h5'>טבלה מורכבת</Typography>
-                <Button variant='outlined' sx={{ padding: "3px" }} >
+                <Button onClick={() => setIsAddComponent(true)} variant='outlined' sx={{ padding: "3px" }} >
                     <AddIcon />  הוספת רכיב איכות
                 </Button>
             </Stack>
 
-            <AddQualityCom setTableList={setTableList} value={value} tableList={tableList} />
+            {isAddComponent && <AddQualityCom setTableList={setTableList} value={value} tableList={tableList} setIsAddComponent={setIsAddComponent}/>}
 
             <Box sx={{ width: 250 }}>
 
@@ -176,7 +176,7 @@ const ComplexTable = () => {
                                     }}>
                                         <TableBody>
                                             {row.subsection.map((subRow, subIndex) => (
-                                                <TableRow key={subIndex} >
+                                                <TableRow key={subRow.id} >
                                                     <TableCell sx={{ borderBottom: '1px solid #E8EAED', borderTop: '1px solid #E8EAED', width: '40%', }} align="right">
                                                         <Button variant="outlined" color="inherit" sx={{ width: '80%', marginRight: '7%' }}>
                                                             {subRow.describe}
@@ -196,7 +196,12 @@ const ComplexTable = () => {
                                 </TableCell>
                             </TableRow>
                         </React.Fragment>
-                            {compToUpdate === row.id && <AddSubsection setCompToUpdate={setCompToUpdate} setTableList={setTableList} compId={row.id} totalWeight={row.weight && row.weight }/>}
+                            {compToUpdate === row.id && <AddSubsection setCompToUpdate={setCompToUpdate}
+                             setTableList={setTableList}
+                              compId={row.id} 
+                              totalWeight={row.weight && row.weight }
+                              subsectionsWeight={row.subsection.reduce((acc, curr) => acc + curr.weight, 0)}/>}
+                              
                         </>
                     ))}
                 </TableBody>

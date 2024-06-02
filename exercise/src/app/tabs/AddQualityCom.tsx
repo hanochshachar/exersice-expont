@@ -1,17 +1,19 @@
 'use client'
 import React, { useState } from 'react'
 import { TableList } from './ComplexTable'
-import { Box, Button, OutlinedInput, TextField, Typography } from '@mui/material'
+import { Box, Button, OutlinedInput, Stack, TextField, Typography } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface AddQualityComProp {
     setTableList: Function
     value: number
     tableList: TableList[]
+    setIsAddComponent: Function
 }
 
-const AddQualityCom = ({setTableList, value, tableList}: AddQualityComProp) => {
+const AddQualityCom = ({ setTableList, value, tableList, setIsAddComponent}: AddQualityComProp) => {
     const [describe, setDescribe] = useState('')
-    const [weight, setWeight] = useState<number | null>()
+    const [weight, setWeight] = useState<number>(0)
 
     const handleSubmit = () => {
         const newItem: TableList = {
@@ -22,7 +24,7 @@ const AddQualityCom = ({setTableList, value, tableList}: AddQualityComProp) => {
         }
         setTableList((prev: TableList[]) => [...prev, newItem])
         setDescribe('')
-        setWeight(null)
+        setWeight(0)
     }
 
     const handleWeightChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,31 +34,36 @@ const AddQualityCom = ({setTableList, value, tableList}: AddQualityComProp) => {
         }
     };
 
-  return (
-    <Box mb={2}>
-    <Typography variant="h6">הוסף רכיב איכות</Typography>
-    <TextField 
-        label="Describe" 
-        value={describe} 
-        onChange={(e) => setDescribe(e.target.value)} 
-        fullWidth 
-        margin="normal" 
-    />
-    <OutlinedInput 
-        label="Weight" 
-        type="number"
-        value={weight} 
-        onChange={handleWeightChange} 
-        fullWidth 
-        inputProps={{
-            max: 100 - value,
-        }}
-    />
-    <Button onClick={handleSubmit} variant="contained" color="primary" sx={{ mt: 2 }}>
-        Add Item
-    </Button>
-</Box>
-  )
+    return (
+        <Box mb={2} sx={{ background: '#E8EAED', padding: '10px' }}>
+            <Stack direction='row' justifyContent='space-between'>
+                <Typography variant="h6">הוסף רכיב איכות</Typography>
+                <Button onClick={() => setIsAddComponent(false)}>
+                    <CloseIcon />
+                </Button>
+            </Stack>
+            <TextField
+                label="Describe"
+                value={describe}
+                onChange={(e) => setDescribe(e.target.value)}
+                fullWidth
+                margin="normal"
+            />
+            <OutlinedInput
+                label="Weight"
+                type="number"
+                value={weight > 0 ? weight : ''}
+                onChange={handleWeightChange}
+                fullWidth
+                inputProps={{
+                    max: 100 - value,
+                }}
+            />
+            <Button onClick={handleSubmit} variant="contained" color="primary" sx={{ mt: 2 }}>
+                Add Item
+            </Button>
+        </Box>
+    )
 }
 
 export default AddQualityCom

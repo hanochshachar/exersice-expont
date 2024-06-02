@@ -1,5 +1,6 @@
 'use client'
-import { Box, Button, OutlinedInput, TextField, Typography } from '@mui/material';
+import { Box, Button, OutlinedInput, Stack, TextField, Typography } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import React, { useState } from 'react';
 import { TableList } from './ComplexTable';
 
@@ -8,12 +9,13 @@ interface AddSubsectionProps {
     setTableList: Function
     compId: number
     totalWeight: number
+    subsectionsWeight: number
 }
 
-const AddSubsection = ({setCompToUpdate, setTableList, compId, totalWeight}: AddSubsectionProps) => {
+const AddSubsection = ({ setCompToUpdate, setTableList, compId, totalWeight, subsectionsWeight }: AddSubsectionProps) => {
 
     const [describe, setDescribe] = useState('');
-    const [weight, setWeight] = useState<Number | null>(null);
+    const [weight, setWeight] = useState<number>(0);
 
     const handleAddSubsection = () => {
         setTableList((prevTableList: TableList[]) => {
@@ -33,16 +35,35 @@ const AddSubsection = ({setCompToUpdate, setTableList, compId, totalWeight}: Add
             });
         });
         setDescribe('');
-        setWeight(null);
-        setCompToUpdate(null);
+        setWeight(0);
+        setCompToUpdate(0);
     };
 
+    const handleWeightChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newWeight = Number(event.target.value);
+        const space = totalWeight - subsectionsWeight
+        if (newWeight <= space) {
+            setWeight(newWeight);
+        } else {
+            setWeight(0);
+        }
+    };
+
+    console.log(totalWeight - subsectionsWeight);
+
+
     return (
-        <Box sx={{width: '100%'}} mb={2} mt={2} margin='auto'>
-            <Typography variant="h6">הוסף תת רכיב</Typography>
+        <Box sx={{ width: '100%', background: '#E8EAED', padding: '10px' }}  mb={2} mt={2} >
+
+            <Stack direction='row' justifyContent='space-between'>
+                <Typography variant="h6">הוסף תת רכיב</Typography>
+                <Button onClick={() =>  setCompToUpdate(null)}>
+                    <CloseIcon />
+                </Button>
+            </Stack>
             <TextField
-            sx={{}}
-            size='small'
+                sx={{}}
+                size='small'
                 label="Describe"
                 value={describe}
                 onChange={(e) => setDescribe(e.target.value)}
@@ -51,14 +72,14 @@ const AddSubsection = ({setCompToUpdate, setTableList, compId, totalWeight}: Add
                 label="Weight"
                 type="number"
                 size='small'
-                value={weight}
-                onChange={(e) => setWeight(Number(e.target.value))}
-                
+                value={weight > 0 ? weight : ''}
+                onChange={handleWeightChange}
+
                 inputProps={{
-                    max: totalWeight,
+                    max: totalWeight - subsectionsWeight,
                 }}
             />
-            <Button size='small' onClick={handleAddSubsection} variant="outlined" color="primary" >
+            <Button sx={{margin:2}} size='small' onClick={handleAddSubsection} variant="outlined" color="primary" >
                 Add Subsection
             </Button>
         </Box>
