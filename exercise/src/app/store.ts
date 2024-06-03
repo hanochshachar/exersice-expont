@@ -3,6 +3,7 @@ import { create } from 'zustand'
 type Pdf = {
     name: string
     path: string
+    size: number
 }
 
 export type Dates = {

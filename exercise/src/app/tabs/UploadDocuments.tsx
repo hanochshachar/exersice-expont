@@ -17,6 +17,7 @@ import Image from 'next/image';
 import pdfIcon from '../../../public/pdfImage.png';
 import { Filter } from '@mui/icons-material';
 import { useFormStore } from '../store';
+import { Size } from 'pspdfkit';
 
 interface PdfDetails {
     id: number | null
@@ -44,7 +45,8 @@ const UploadDocuments = () => {
         const relevantData = pdfListDetails.map((pdf) => {
             return {
                 name: pdf.name ?? '',
-                path: pdf.file?.name ?? ''
+                path: pdf.file?.name ?? '',
+                size: pdf.file?.size ?? 0
             }
         })
         setPdf(relevantData)

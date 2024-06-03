@@ -1,0 +1,33 @@
+.summary-form {
+    width: 80%;
+    margin: 0 auto;
+
+    header {
+        margin-right: 110px;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .location_indicator {
+        display: flex;
+        width: 80%;
+        justify-content: space-between;
+        align-items: center;
+        margin: auto;
+
+    }
+
+    .paragraph {
+        margin-bottom: 2rem;
+    }
+
+    .content {
+        width: 80%;
+        border: 1px solid #E8EAED;
+        border-radius: 16px;
+        padding: 32px;
+        margin: auto;
+        height: fit-content;
+    }
+
+}
