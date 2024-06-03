@@ -1,5 +1,5 @@
 'use client'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AdjustRoundedIcon from '@mui/icons-material/AdjustRounded';
 import { Box, Typography } from '@mui/material';
@@ -11,12 +11,38 @@ import './summary.css'
 import { useFormStore } from '@/app/store';
 import PdfIcon from '../../../../public/pdfImage.png'
 
+type Pdf = {
+  name: string
+  path: string
+  size: number
+}
+
+export type Dates = {
+  firstDate: string
+  datesArray: string[]
+}
+
+interface Data {
+  bigText: string
+  DividedQuality: number
+  pdf: Pdf[]
+  dateList: Dates
+}
+
 const SubmitTab = () => {
 
   const {bigText,
     DividedQuality,
     pdf,
     dateList} = useFormStore((state) => state)
+
+    const [data, setData] = useState<Data>()
+    useEffect(() => {
+        setData({bigText,
+          DividedQuality,
+          pdf,
+          dateList})
+    }, [bigText, DividedQuality, pdf, dateList])
 
     const formatFileSize = (size: any) => {
       if (size < 1024) return `${size} bytes`;

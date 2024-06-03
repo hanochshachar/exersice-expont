@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AdjustRoundedIcon from '@mui/icons-material/AdjustRounded';
@@ -10,13 +11,14 @@ import { WidthFull } from '@mui/icons-material';
 import DateForm from './tabs/DateForm';
 import UploadDocuments from './tabs/UploadDocuments';
 import ComplexTable from './tabs/complexTable/ComplexTable';
+import { useRouter } from 'next/navigation';
 
 
 
 const MainForm = () => {
 
   
-
+  const router = useRouter()
   // const handleSubmit = (onSubmit) => (event) => {
   //   event.preventDefault();
   //   onSubmit(formData);
@@ -55,7 +57,9 @@ const MainForm = () => {
         <DateForm />
         <UploadDocuments />
         <ComplexTable />
-      
+        <button type="button" onClick={() => router.push('/tabs/summary')}>
+      המשך
+    </button>
 
     </main>
   )
