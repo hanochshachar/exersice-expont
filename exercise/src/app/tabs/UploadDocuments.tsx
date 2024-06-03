@@ -16,6 +16,7 @@ import packageJson from '../../../package.json';
 import Image from 'next/image';
 import pdfIcon from '../../../public/pdfImage.png';
 import { Filter } from '@mui/icons-material';
+import { useFormStore } from '../store';
 
 interface PdfDetails {
     id: number | null
@@ -31,6 +32,23 @@ const UploadDocuments = () => {
     const [pdfError, setPdfError] = useState('');
     const [pdfToDisplay, setPdfToDisplay] = useState<any>(null)
     const [bigText, setBigText] = useState('')
+
+    const setBigTextGlobal = useFormStore((state) => state.setBigText)
+    const setPdf = useFormStore((state) => state.setPdf)
+
+    useEffect(() => {
+        setBigTextGlobal(bigText)
+    }, [bigText])
+
+    useEffect(() => {
+        const relevantData = pdfListDetails.map((pdf) => {
+            return {
+                name: pdf.name ?? '',
+                path: pdf.file?.name ?? ''
+            }
+        })
+        setPdf(relevantData)
+    }, [pdfListDetails])
 
     const defaultLayoutPluginInstance = defaultLayoutPlugin();
     const pdfjsVersion = packageJson.dependencies['pdfjs-dist'];
@@ -98,6 +116,8 @@ const UploadDocuments = () => {
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
+    
+
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <MyStack>
@@ -107,6 +127,7 @@ const UploadDocuments = () => {
                 <TextField multiline={true}
                     rows={5}
                     placeholder='הקלד כאן'
+                    autoFocus
                     value={bigText}
                     onChange={(ev) => setBigText(ev.target.value) } />
             </MyStack>

@@ -1,11 +1,13 @@
 'use client'
-import React, { useEffect, useState } from 'react';
-import './main-form.css'
+import React, { useContext, useEffect, useState } from 'react';
+import '../main-form.css'
 import { Box, Button, Grid, Input, InputAdornment, OutlinedInput, Slider, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AddQualityCom from './AddQualityCom';
 import AddSubsection from './AddSubsection';
+import { FormContext } from '../../components/FormContext';
+import { useFormStore } from '@/app/store';
 
 interface Subsection {
     id: number
@@ -40,6 +42,19 @@ const ComplexTable = () => {
     )
     const [isAddComponent, setIsAddComponent] = useState(false)
     const [compToUpdate, setCompToUpdate] = useState<number | null>(null)
+
+    // const formContext: any = useContext(FormContext)
+    // const { formData, updateFormData }: any = formContext
+    const setDividedQuality = useFormStore((state) => state.setDividedQuality)
+    const store = useFormStore((state) => state)
+ 
+    useEffect(() => {
+        setDividedQuality(tableList.length)
+        
+        
+    }, [tableList])
+
+   
 
     const handleSliderChange = (event: Event, newValue: number | number[]) => {
         setValue(newValue as number);
@@ -139,7 +154,7 @@ const ComplexTable = () => {
                 </TableHead>
                 <TableBody>
                     {tableList.map((row, index) => (
-                        <>
+                        
 
                         <React.Fragment key={row.id} >
 
@@ -195,14 +210,14 @@ const ComplexTable = () => {
 
                                 </TableCell>
                             </TableRow>
-                        </React.Fragment>
                             {compToUpdate === row.id && <AddSubsection setCompToUpdate={setCompToUpdate}
                              setTableList={setTableList}
                               compId={row.id} 
                               totalWeight={row.weight && row.weight }
                               subsectionsWeight={row.subsection.reduce((acc, curr) => acc + curr.weight, 0)}/>}
+                        </React.Fragment>
                               
-                        </>
+                        
                     ))}
                 </TableBody>
             </Table>

@@ -2,7 +2,7 @@
 import { Box, Button, OutlinedInput, Stack, TextField, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useState } from 'react';
-import { TableList } from './ComplexTable';
+import { TableList } from './complexTable/ComplexTable';
 
 interface AddSubsectionProps {
     setCompToUpdate: Function

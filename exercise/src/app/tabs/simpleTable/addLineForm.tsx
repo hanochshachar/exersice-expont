@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { DataTableProps } from './FirstForm';
+import { DataTableProps } from './simpleTable/FirstForm';
 
 import { Button, TextField, Box, IconButton, Stack } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
