@@ -34,8 +34,8 @@ const UploadDocuments = () => {
     const [pdfToDisplay, setPdfToDisplay] = useState<any>(null)
     const [bigText, setBigText] = useState('')
 
-    const setBigTextGlobal = useFormStore((state) => state.setBigText)
-    const setPdf = useFormStore((state) => state.setPdf)
+    const setBigTextGlobal = useFormStore((state: any) => state.setBigText)
+    const setPdf = useFormStore((state: any) => state.setPdf)
 
     useEffect(() => {
         setBigTextGlobal(bigText)

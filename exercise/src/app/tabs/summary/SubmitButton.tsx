@@ -13,7 +13,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({ data }) => {
       return;
     }
 
-    const response = await fetch('http://localhost:3000/tabs/summary/api', {
+    const response = await fetch('http://localhost:3000/api', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

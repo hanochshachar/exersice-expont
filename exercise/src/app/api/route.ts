@@ -11,17 +11,18 @@ const dbConfig = {
   
   
    
+   console.log(req.body);
    if (req.method === 'POST') {
-    console.log(req.body);
    
     
-    const { bigText, DividedQuality, pdf, dateList } = req.body
-  
-    let connection: mysql.Connection | null = null
-    try {
+     
+     const { bigText, DividedQuality, pdf, dateList } = req.body
+     let connection: mysql.Connection | null = null
+     try {
       connection = await mysql.createConnection(dbConfig)
       console.log('Database connection established')
-
+      console.log(req.body);
+      
       // Start transaction
       await connection.beginTransaction()
       console.log('Transaction started')
