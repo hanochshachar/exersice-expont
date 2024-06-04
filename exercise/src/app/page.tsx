@@ -2,7 +2,7 @@
 import React from 'react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AdjustRoundedIcon from '@mui/icons-material/AdjustRounded';
-import { Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import FirstForm from './tabs/simpleTable/FirstForm';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
@@ -17,14 +17,8 @@ import { useRouter } from 'next/navigation';
 
 const MainForm = () => {
 
-  
   const router = useRouter()
-  // const handleSubmit = (onSubmit) => (event) => {
-  //   event.preventDefault();
-  //   onSubmit(formData);
-  // };
   
-
   return (
     <main className='main-form'>
       <header >
@@ -57,9 +51,9 @@ const MainForm = () => {
         <DateForm />
         <UploadDocuments />
         <ComplexTable />
-        <button type="button" onClick={() => router.push('/tabs/summary')}>
+        <Button variant='contained' sx={{marginTop: 2, marginRight: '85%'}} onClick={() => router.push('/tabs/summary')}>
       המשך
-    </button>
+    </Button>
 
     </main>
   )

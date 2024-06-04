@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AdjustRoundedIcon from '@mui/icons-material/AdjustRounded';
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Stack from '@mui/material/Stack';
@@ -10,6 +10,8 @@ import Image from 'next/image';
 import './summary.css'
 import { useFormStore } from '@/app/store';
 import PdfIcon from '../../../../public/pdfImage.png'
+import editIcon from '../../../../public/edit-svgrepo-com (1).svg';
+import { useRouter } from 'next/navigation';
 
 type Pdf = {
   name: string
@@ -22,7 +24,7 @@ export type Dates = {
   datesArray: string[]
 }
 
-interface Data {
+export interface Data {
   bigText: string
   DividedQuality: number
   pdf: Pdf[]
@@ -31,10 +33,12 @@ interface Data {
 
 const SubmitTab = () => {
 
+  const router = useRouter()
+
   const {bigText,
     DividedQuality,
     pdf,
-    dateList} = useFormStore((state) => state)
+    dateList} = useFormStore((state: any) => state)
 
     const [data, setData] = useState<Data>()
     useEffect(() => {
@@ -43,12 +47,31 @@ const SubmitTab = () => {
           pdf,
           dateList})
     }, [bigText, DividedQuality, pdf, dateList])
+    useEffect(() => {
+      console.log(data);
+      
+    }, [data])
 
     const formatFileSize = (size: any) => {
       if (size < 1024) return `${size} bytes`;
       if (size < 1048576) return `${(size / 1024).toFixed(2)} KB`;
       return `${(size / 1048576).toFixed(2)} MB`;
   };
+
+  const submitForm = async () => {
+    
+  
+    const response = await fetch(`/summary/api`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({data: data}),
+    })
+  
+    const resData = await response.json()
+    console.log(resData)
+  }
 
   return (
     <div className='summary-form'>
@@ -87,7 +110,7 @@ const SubmitTab = () => {
         <Typography variant='subtitle2' align='right'> סכום החלוקה</Typography>
         <Typography variant='body2' align='right' mb={2}> {DividedQuality}</Typography>
         <Typography variant='subtitle2' align='right'> הגבלת סכום ההתקשרות</Typography>
-        {pdf && pdf.map((item, index) => (
+        {pdf && pdf.map((item: any, index: number) => (
           <Stack direction='row' alignItems='center' justifyContent='space-around' gap={2} key={index}>
 
           <Box >
@@ -106,10 +129,18 @@ const SubmitTab = () => {
         <Typography variant='subtitle1' align='right'> תאריך פתיחת ההגשה</Typography>
         <Typography variant='body2' align='right' > {dateList.firstDate} תאריך פתיחה:</Typography>
         <Typography variant='body2' align='right'> תאריכים נוספים:</Typography>
-        {dateList && dateList.datesArray.map((date, index) => (
+        {dateList && dateList.datesArray.map((date: any, index: number) => (
           <Typography key={index} variant='body2' align='right' mb={2}> {date}</Typography>
         ))}
       </div>
+      <Stack direction='row'  gap={2} sx={{marginRight: '75%'}} mt={3}>
+      <Button variant='outlined'  onClick={() => router.push('/')}>
+          חזור לעריכה   <Image src={editIcon} alt='' ></Image>
+    </Button>
+    <Button variant='contained'  onClick={submitForm}>
+      שלח
+    </Button>
+      </Stack>
     </div>
   )
 }
