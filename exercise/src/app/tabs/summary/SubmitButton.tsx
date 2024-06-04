@@ -18,7 +18,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({ data }) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ data }),
+      body: JSON.stringify( data ),
     });
 
     const resData = await response.json();
