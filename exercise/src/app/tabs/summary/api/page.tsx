@@ -12,7 +12,7 @@ const dbConfig = {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   
-  
+  'use server'
   console.log(req);
   
   if (req.method === 'POST') {

@@ -12,6 +12,7 @@ import { useFormStore } from '@/app/store';
 import PdfIcon from '../../../../public/pdfImage.png'
 import editIcon from '../../../../public/edit-svgrepo-com (1).svg';
 import { useRouter } from 'next/navigation';
+import SubmitButton from './SubmitButton';
 
 type Pdf = {
   name: string
@@ -58,21 +59,6 @@ const SubmitTab = () => {
       return `${(size / 1048576).toFixed(2)} MB`;
   };
 
-  const submitForm = async () => {
-    
-  
-    const response = await fetch(`/summary/api`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({data: data}),
-    })
-  
-    const resData = await response.json()
-    console.log(resData)
-  }
-
   return (
     <div className='summary-form'>
       <header >
@@ -111,16 +97,16 @@ const SubmitTab = () => {
         <Typography variant='body2' align='right' mb={2}> {DividedQuality}</Typography>
         <Typography variant='subtitle2' align='right'> הגבלת סכום ההתקשרות</Typography>
         {pdf && pdf.map((item: any, index: number) => (
-          <Stack direction='row' alignItems='center' justifyContent='space-around' gap={2} key={index}>
+          <Stack direction='row' alignItems='center' sx={{background: 'gray', width: '360px'}} gap={2} key={index}>
 
-          <Box >
+          
               <Image
                   src={PdfIcon}
                   alt="PDF Preview"
                   width={15}
                   height={15}
               />
-          </Box>
+          
           <Typography variant="body2" >{item.name}</Typography>
           <Typography variant="body2">{formatFileSize(item?.size)}</Typography>
       </Stack>
@@ -137,9 +123,7 @@ const SubmitTab = () => {
       <Button variant='outlined'  onClick={() => router.push('/')}>
           חזור לעריכה   <Image src={editIcon} alt='' ></Image>
     </Button>
-    <Button variant='contained'  onClick={submitForm}>
-      שלח
-    </Button>
+    <SubmitButton data={data}/>
       </Stack>
     </div>
   )
