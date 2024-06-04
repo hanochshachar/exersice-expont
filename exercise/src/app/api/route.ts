@@ -7,15 +7,12 @@ const dbConfig = {
   password: '123456',
   database: 'ex',
 }
-
-
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+ export async function POST(req: NextApiRequest, res: NextApiResponse) {
   
-  'use server'
-  console.log(req);
   
-  if (req.method === 'POST') {
+   
+   if (req.method === 'POST') {
+    console.log(req.body);
    
     
     const { bigText, DividedQuality, pdf, dateList } = req.body
@@ -53,14 +50,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       )
       console.log('Inserted firstDate into dates table:', firstDateResult)
 
-      // Insert each date in datesArray into dates table
+     
       const queryDate = 'INSERT INTO dates (date, base_id) VALUES (?, ?)'
       for (const date of dateList.datesArray) {
         const [dateResult] = await connection.execute(queryDate, [date, infoId])
         console.log('Inserted date into dates table:', dateResult)
       }
 
-      // Commit transaction
+      
       await connection.commit()
       console.log('Transaction committed')
 
@@ -78,3 +75,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
    
   }
 }
+
+// import type { NextApiRequest, NextApiResponse } from 'next'
+ 
+// type ResponseData = {
+//   message: string
+// }
+ 
+// export default function handler(
+//   req: NextApiRequest,
+//   res: NextApiResponse<ResponseData>
+// ) {
+//   res.status(200).json({ message: 'Hello from Next.js!' })
+// }
