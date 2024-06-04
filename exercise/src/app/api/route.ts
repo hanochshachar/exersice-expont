@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import mysql from 'mysql2/promise'
+import { NextResponse } from 'next/server';
 
 const dbConfig = {
   host: '127.0.0.1',
@@ -7,85 +8,69 @@ const dbConfig = {
   password: '123456',
   database: 'ex',
 }
- export async function POST(req: NextApiRequest, res: NextApiResponse) {
-  
-  
-   
-   console.log(req.body);
-   if (req.method === 'POST') {
-   
-    
-     
-     const { bigText, DividedQuality, pdf, dateList } = req.body
-     let connection: mysql.Connection | null = null
-     try {
-      connection = await mysql.createConnection(dbConfig)
-      console.log('Database connection established')
-      console.log(req.body);
-      
-      // Start transaction
-      await connection.beginTransaction()
-      console.log('Transaction started')
 
-      // Insert into info table
-      const [infoResult] = await connection.execute<mysql.ResultSetHeader>(
-        'INSERT INTO info (bigText, DividedQuality) VALUES (?, ?)',
-        [bigText, DividedQuality]
-      )
-      const infoId = infoResult.insertId
-      console.log('Inserted into info table, ID:', infoId)
+export async function POST(req: Request) {
+  if (req.method !== 'POST') {
+    return new NextResponse(`Method ${req.method} Not Allowed`, { status: 405 });
+  }
 
-      // Insert into pdf table
-      for (const p of pdf) {
-        const [pdfResult] = await connection.execute(
-          'INSERT INTO pdf (name, path, size, infoId) VALUES (?, ?, ?, ?)',
-          [p.name, p.path, p.size, infoId]
-        )
-        console.log('Inserted into pdf table:', pdfResult)
-      }
+  const { bigText, DividedQuality, pdf, dateList } = await req.json();
+  let connection: mysql.Connection | null = null;
 
-      // Insert the firstDate into the dates table
-      const [firstDateResult] = await connection.execute(
-        'INSERT INTO dates (date, base_id) VALUES (?, ?)',
-        [dateList.firstDate, infoId]
-      )
-      console.log('Inserted firstDate into dates table:', firstDateResult)
+  try {
+    connection = await mysql.createConnection(dbConfig);
+    console.log('Database connection established');
+    console.log(req.body);
 
-     
-      const queryDate = 'INSERT INTO dates (date, base_id) VALUES (?, ?)'
-      for (const date of dateList.datesArray) {
-        const [dateResult] = await connection.execute(queryDate, [date, infoId])
-        console.log('Inserted date into dates table:', dateResult)
-      }
+    // Start transaction
+    await connection.beginTransaction();
+    console.log('Transaction started');
 
-      
-      await connection.commit()
-      console.log('Transaction committed')
+    // Insert into info table
+    const [infoResult] = await connection.execute<mysql.ResultSetHeader>(
+      'INSERT INTO info (bigText, DividedQuality) VALUES (?, ?)',
+      [bigText, DividedQuality]
+    );
+    const infoId = infoResult.insertId;
+    console.log('Inserted into info table, ID:', infoId);
 
-      res.status(200).json({ message: 'Form data saved successfully' })
-    } catch (error: any) {
-      console.error('Error during database operation:', error)
-      if (connection) await connection.rollback()
-      res.status(500).json({ error: 'Failed to save form data', details: error.message })
-    } finally {
-      if (connection) await connection.end()
+    // Insert into pdf table
+    for (const p of pdf) {
+      const [pdfResult] = await connection.execute<mysql.ResultSetHeader>(
+        'INSERT INTO pdf (name, path, size, base_id) VALUES (?, ?, ?, ?)',
+        [p.name, p.path, p.size, infoId]
+      );
+      console.log('Inserted into pdf table:', pdfResult);
     }
-  } else {
-    res.setHeader('Allow', ['POST'])
-    res.status(405).end(`Method ${req.method} Not Allowed`)
-   
+
+    // Insert the firstDate into the dates table
+    const [firstDateResult] = await connection.execute<mysql.ResultSetHeader>(
+      'INSERT INTO dates (date, base_id) VALUES (?, ?)',
+      [dateList.firstDate, infoId]
+    );
+    console.log('Inserted firstDate into dates table:', firstDateResult);
+
+    const queryDate = 'INSERT INTO dates (date, base_id) VALUES (?, ?)';
+    for (const date of dateList.datesArray) {
+      const [dateResult] = await connection.execute<mysql.ResultSetHeader>(queryDate, [date, infoId]);
+      console.log('Inserted date into dates table:', dateResult);
+    }
+
+    await connection.commit();
+    if (connection) await connection.end();
+
+    console.log('Transaction committed');
+    return new NextResponse(JSON.stringify({ message: 'Form data saved successfully' }), { status: 200 });
+  } catch (error: any) {
+    if (connection) await connection.rollback();
+    console.error('Error during database operation:', error);
+    return new NextResponse(JSON.stringify({ error: 'Failed to save form data', details: error.message }), { status: 500 });
+  } finally {
+    if (connection) await connection.end();
   }
 }
 
-// import type { NextApiRequest, NextApiResponse } from 'next'
- 
-// type ResponseData = {
-//   message: string
-// }
- 
-// export default function handler(
-//   req: NextApiRequest,
-//   res: NextApiResponse<ResponseData>
-// ) {
-//   res.status(200).json({ message: 'Hello from Next.js!' })
-// }
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const response = await POST(req as any);
+  res.status(response.status).send(await response.text());
+}
