@@ -13,8 +13,9 @@ import PdfIcon from '../../../../public/pdfImage.png'
 import editIcon from '../../../../public/edit-svgrepo-com (1).svg';
 import { useRouter } from 'next/navigation';
 import SubmitButton from './SubmitButton';
+import {Post} from '@/app/_components/Post';
 
-type Pdf = {
+export type Pdf = {
   name: string
   path: string
   size: number
@@ -124,6 +125,7 @@ const SubmitTab = () => {
           חזור לעריכה   <Image src={editIcon} alt='' ></Image>
     </Button>
     <SubmitButton data={data}/>
+    <Post data={data}/>
       </Stack>
     </div>
   )

@@ -20,6 +20,10 @@
     "@mui/x-date-pickers": "^7.6.0",
     "@react-pdf-viewer/core": "^3.12.0",
     "@react-pdf-viewer/default-layout": "^3.12.0",
+    "@trpc/client": "^11.0.0-rc.390",
+    "@trpc/next": "^11.0.0-rc.390",
+    "@trpc/react-query": "^11.0.0-rc.390",
+    "@trpc/server": "^11.0.0-rc.390",
     "dayjs": "^1.11.11",
     "mysql2": "^3.10.0",
     "next": "14.2.3",
@@ -30,6 +34,7 @@
     "react-dom": "^18",
     "react-dropzone": "^14.2.3",
     "react-pdf": "^9.0.0",
+    "zod": "^3.23.8",
     "zustand": "^4.5.2"
   },
   "devDependencies": {

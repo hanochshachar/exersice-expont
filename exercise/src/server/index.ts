@@ -1,6 +1,20 @@
-import { NextApiRequest, NextApiResponse } from 'next'
+import { publicProcedure, router } from "./trpc";
+import { z } from "zod";
 import mysql from 'mysql2/promise'
-import { NextResponse } from 'next/server';
+
+const DataSchema = z.object({
+  bigText: z.string(),
+  DividedQuality: z.number(),
+  pdf: z.array(z.object({
+    name: z.string(),
+    path: z.string(),
+    size: z.number()
+  })),
+  dateList: z.object({
+    firstDate: z.string(),
+    datesArray: z.array(z.string())
+  })
+});
 
 const dbConfig = {
   host: '127.0.0.1',
@@ -9,24 +23,16 @@ const dbConfig = {
   database: 'ex',
 }
 
-export async function POST(req: Request) {
-  if (req.method !== 'POST') {
-    return new NextResponse(`Method ${req.method} Not Allowed`, { status: 405 });
-  }
+export const appRouter: any = router({
+  post: publicProcedure.input(DataSchema).mutation(async ({ input }) => {
+    const { bigText, DividedQuality, pdf, dateList } = input;
 
-  const { bigText, DividedQuality, pdf, dateList } = await req.json();
-  let connection: mysql.Connection | null = null;
-
-  try {
-    connection = await mysql.createConnection(dbConfig);
+    const connection = await mysql.createConnection(dbConfig);
     console.log('Database connection established');
-    
 
-    // Start transaction
     await connection.beginTransaction();
     console.log('Transaction started');
 
-    // Insert into info table
     const [infoResult] = await connection.execute<mysql.ResultSetHeader>(
       'INSERT INTO info (bigText, DividedQuality) VALUES (?, ?)',
       [bigText, DividedQuality]
@@ -60,17 +66,8 @@ export async function POST(req: Request) {
     if (connection) await connection.end();
 
     console.log('Transaction committed');
-    return new NextResponse(JSON.stringify({ message: 'Form data saved successfully' }), { status: 200 });
-  } catch (error: any) {
-    if (connection) await connection.rollback();
-    console.error('Error during database operation:', error);
-    return new NextResponse(JSON.stringify({ error: 'Failed to save form data', details: error.message }), { status: 500 });
-  } finally {
-    if (connection) await connection.end();
-  }
-}
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const response = await POST(req as any);
-  res.status(response.status).send(await response.text());
-}
+    return JSON.stringify({ message: 'Form data saved successfully' }), { status: 200 }
+  })
+})
+export type AppRouter = typeof appRouter
